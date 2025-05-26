@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Калькулятор GPA</title>
+  <style>
+    body { font-family: sans-serif; max-width: 700px; margin: 30px auto; background: #f9f9f9; padding: 20px; border-radius: 10px; }
+    input, select { padding: 5px; margin: 5px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    button { margin-top: 10px; padding: 10px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Калькулятор GPA</h1>
+
+  <table id="subjects">
+    <tr>
+      <th>Предмет (необязательно)</th>
+      <th>Кредиты</th>
+      <th>Оценка (буквенная)</th>
+    </tr>
+    <tr>
+      <td><input type="text" placeholder="Математика"></td>
+      <td><input type="number" min="0" step="1" class="credits"></td>
+      <td>
+        <select class="grade">
+          <option value="4.0">A</option>
+          <option value="3.67">A-</option>
+          <option value="3.33">B+</option>
+          <option value="3.0">B</option>
+          <option value="2.67">B-</option>
+          <option value="2.33">C+</option>
+          <option value="2.0">C</option>
+          <option value="1.67">C-</option>
+          <option value="1.33">D+</option>
+          <option value="1.0">D</option>
+          <option value="0.0">FX</option>
+          <option value="0.0">F</option>
+        </select>
+      </td>
+    </tr>
+  </table>
+
+  <button onclick="addRow()">Добавить предмет</button>
+  <button onclick="calculateGPA()">Рассчитать GPA</button>
+
+  <h2 id="result"></h2>
+
+  <script>
+    function addRow() {
+      const table = document.getElementById('subjects');
+      const row = table.insertRow();
+      row.innerHTML = `
+        <td><input type="text" placeholder="Название предмета"></td>
+        <td><input type="number" min="0" step="1" class="credits"></td>
+        <td>
+          <select class="grade">
+            <option value="4.0">A</option>
+            <option value="3.67">A-</option>
+            <option value="3.33">B+</option>
+            <option value="3.0">B</option>
+            <option value="2.67">B-</option>
+            <option value="2.33">C+</option>
+            <option value="2.0">C</option>
+            <option value="1.67">C-</option>
+            <option value="1.33">D+</option>
+            <option value="1.0">D</option>
+            <option value="0.0">FX</option>
+            <option value="0.0">F</option>
+          </select>
+        </td>`;
+    }
+
+    function calculateGPA() {
+      const credits = document.querySelectorAll('.credits');
+      const grades = document.querySelectorAll('.grade');
+      let totalCredits = 0;
+      let totalPoints = 0;
+
+      for (let i = 0; i < credits.length; i++) {
+        const credit = parseFloat(credits[i].value);
+        const grade = parseFloat(grades[i].value);
+        if (!isNaN(credit) && !isNaN(grade)) {
+          totalCredits += credit;
+          totalPoints += credit * grade;
+        }
+      }
+
+      const gpa = totalCredits ? (totalPoints / totalCredits).toFixed(2) : '0.00';
+      document.getElementById('result').textContent = `Ваш GPA: ${gpa}`;
+    }
+  </script>
+</body>
+</html>
